@@ -83,7 +83,7 @@
                 <converter:CollapsedOnNullValue x:Key="CollapsedOnNullValue" />
             </Grid.Resources>
             <Grid>
-                <Button Height="30"
+                <!--<Button Height="30"
                         Background="{StaticResource NormalColorBrush}"
                         Command="{Binding OpenUpdater}"
                         Visibility="{Binding Updater.UpdateFound,
@@ -94,7 +94,7 @@
                     </Button.Resources>
 
                     <TextBlock Foreground="White" Text="{DynamicResource NewUpdateAvailable}" />
-                </Button>
+                </Button>-->
             </Grid>
             <DockPanel Grid.Row="1"
                        Margin="5,5,0,0"

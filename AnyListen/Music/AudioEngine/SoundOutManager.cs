@@ -56,7 +56,7 @@ namespace AnyListen.Music.AudioEngine
 
         protected void OnRefreshSoundOut()
         {
-            if (RefreshSoundOut != null) RefreshSoundOut(this, EventArgs.Empty);
+            RefreshSoundOut?.Invoke(this, EventArgs.Empty);
         }
 
         public ISoundOut GetNewSoundSource()
@@ -273,14 +273,14 @@ namespace AnyListen.Music.AudioEngine
             {
                 if (_enabled == true) return;
                 _enabled = true;
-                if (Enable != null) Enable(this, EventArgs.Empty);
+                Enable?.Invoke(this, EventArgs.Empty);
                 return;
             }
 
             if (_enabled == true)
             {
                 _enabled = false;
-                if (Disable != null) Disable(this, EventArgs.Empty);
+                Disable?.Invoke(this, EventArgs.Empty);
             }
         }
 

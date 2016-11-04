@@ -40,12 +40,13 @@ namespace AnyListen.Music.Track
 
         public override void OpenTrackLocation()
         {
-            Process.Start(Link);
+            Process.Start(SongResult.CopyUrl);
         }
 
         public override Task<IWaveSource> GetSoundSource()
         {
-            return Task.Run(() => CutWaveSource(CodecFactory.Instance.GetCodec(new Uri(Link))));
+            var link = CommonHelper.GetLocation(Link);
+            return string.IsNullOrEmpty(link) ? null : Task.Run(() => CutWaveSource(CodecFactory.Instance.GetCodec(new Uri(link))));
         }
 
         protected async override Task LoadImage(DirectoryInfo albumCoverDirectory)
@@ -114,7 +115,7 @@ namespace AnyListen.Music.Track
                 {
                     link = SongResult.CopyUrl;
                 }
-                return CommonHelper.GetLocation(link);
+                return link;
             }
         }
 

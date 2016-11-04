@@ -15,11 +15,11 @@ namespace AnyListen.Music.AudioEngine
         protected async Task Fade(float from, float to, TimeSpan duration, bool getLouder, ISoundOut soundout)
         {
             IsFading = true;
-            float different = Math.Abs(to - from);
-            float step = different / ((float)duration.TotalMilliseconds / 20);
-            float currentvolume = from;
+            var different = Math.Abs(to - from);
+            var step = different / ((float)duration.TotalMilliseconds / 20);
+            var currentvolume = from;
 
-            for (int i = 0; i < duration.TotalMilliseconds / 20; i++)
+            for (var i = 0; i < duration.TotalMilliseconds / 20; i++)
             {
                 if (_cancel) { _cancel = false; OnCancelled(); break; }
                 await Task.Delay(20);
@@ -110,7 +110,7 @@ namespace AnyListen.Music.AudioEngine
             var steps = seconds / 0.2;
             var soundstep = soundOut.Volume / (float)steps;
 
-            for (int i = 0; i < steps; i++)
+            for (var i = 0; i < steps; i++)
             {
                 if (_cancel) { _cancel = false; break; }
                 await Task.Delay(200);

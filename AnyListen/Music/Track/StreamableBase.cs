@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows.Media;
+using AnyListen.Music.Track.WebApi.AnyListen;
 using AnyListen.ViewModelBase;
 
 namespace AnyListen.Music.Track
@@ -27,7 +28,15 @@ namespace AnyListen.Music.Track
         protected RelayCommand _openLinkCommand;
         public virtual RelayCommand OpenLinkCommand
         {
-            get { return _openLinkCommand ?? (_openLinkCommand = new RelayCommand(parameter => { Process.Start(Link); })); }
+            get { return _openLinkCommand ?? (_openLinkCommand = new RelayCommand(parameter =>
+            {
+                var link = CommonHelper.GetLocation(Link);
+                if (string.IsNullOrEmpty(link))
+                {
+                    return;
+                }
+                Process.Start(link);
+            })); }
         }
 
         // ReSharper disable once InconsistentNaming

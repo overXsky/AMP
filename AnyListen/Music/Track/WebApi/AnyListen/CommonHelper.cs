@@ -52,13 +52,14 @@ namespace AnyListen.Music.Track.WebApi.AnyListen
                 xmRequest.Accept = @"text/html,application/xhtml+xml,application/xml;*/*";
                 xmRequest.UserAgent = @"Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36";
                 xmRequest.Method = "GET";
-                xmRequest.ContentType = "text/html; charset=utf-8";
-                var response = (HttpWebResponse)xmRequest.GetResponse();
-                if (response.StatusCode != HttpStatusCode.BadRequest && response.StatusCode != HttpStatusCode.Forbidden && response.StatusCode != HttpStatusCode.NoContent && response.StatusCode != HttpStatusCode.NotFound)
-                {
-                    return response.ResponseUri.ToString();
-                }
-                return null;
+                xmRequest.AllowAutoRedirect = false;
+                var response = (HttpWebResponse) xmRequest.GetResponse();
+                if (response.StatusCode == HttpStatusCode.BadRequest || response.StatusCode == HttpStatusCode.Forbidden ||
+                    response.StatusCode == HttpStatusCode.NoContent || response.StatusCode == HttpStatusCode.NotFound)
+                    return null;
+                if (!getUrl.Contains("itwusun.com")) return getUrl;
+                var location = response.Headers["Location"];
+                return string.IsNullOrEmpty(location) ? null : location;
             }
             catch (Exception)
             {
@@ -279,6 +280,7 @@ namespace AnyListen.Music.Track.WebApi.AnyListen
             }
             return time;
         }
+
         public static void AddLog(string str)
         {
             str = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss ") + str + "\r\n";

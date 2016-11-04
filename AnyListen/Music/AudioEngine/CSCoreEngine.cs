@@ -106,23 +106,21 @@ namespace AnyListen.Music.AudioEngine
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                _fader.Dispose();
-                SoundOutManager.Dispose();
+            if (!disposing) return;
+            _fader.Dispose();
+            SoundOutManager.Dispose();
 
-                if (_soundOut != null)
+            if (_soundOut != null)
+            {
+                if (_fader.IsFading)
                 {
-                    if (_fader.IsFading)
-                    {
-                        _fader.CancelFading();
-                        _fader.WaitForCancel();
-                    }
-                    _soundOut.Dispose();
-                    _crossfade.CancelFading();
+                    _fader.CancelFading();
+                    _fader.WaitForCancel();
                 }
-                SoundSource?.Dispose();
+                _soundOut.Dispose();
+                _crossfade.CancelFading();
             }
+            SoundSource?.Dispose();
         }
 
         public event EventHandler PlayStateChanged;

@@ -13,15 +13,13 @@ namespace AnyListen.Music.MusicCover
         public static BitmapImage GetAlbumImage(PlayableBase track, DirectoryInfo di)
         {
             if (string.IsNullOrEmpty(track.Album)) return null;
-            if (di.Exists)
+            if (!di.Exists) return null;
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (var item in di.GetFiles("*.png"))
             {
-                // ReSharper disable once LoopCanBeConvertedToQuery
-                foreach (var item in di.GetFiles("*.png"))
+                if (track.Album.ToEscapedFilename().ToLower() == Path.GetFileNameWithoutExtension(item.FullName).ToLower())
                 {
-                    if (track.Album.ToEscapedFilename().ToLower() == Path.GetFileNameWithoutExtension(item.FullName).ToLower())
-                    {
-                        return new BitmapImage(new Uri(item.FullName));
-                    }
+                    return new BitmapImage(new Uri(item.FullName));
                 }
             }
 
