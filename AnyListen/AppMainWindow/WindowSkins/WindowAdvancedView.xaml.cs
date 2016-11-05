@@ -16,11 +16,11 @@ namespace AnyListen.AppMainWindow.WindowSkins
         {
             InitializeComponent();
 
-            Configuration = new WindowSkinConfiguration()
+            Configuration = new WindowSkinConfiguration
             {
                 MaxHeight = double.PositiveInfinity,
                 MaxWidth = double.PositiveInfinity,
-                MinHeight = 600,
+                MinHeight = 580,
                 MinWidth = 940,
                 ShowSystemMenuOnRightClick = true,
                 ShowTitleBar = false,

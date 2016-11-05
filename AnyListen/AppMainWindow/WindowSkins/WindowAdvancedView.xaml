@@ -15,7 +15,7 @@
              xmlns:web="clr-namespace:AnyListen.Music.Track.WebApi"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              DataContext="{x:Static viewmodels:MainViewModel.Instance}"
-             d:DesignHeight="600"
+             d:DesignHeight="580"
              d:DesignWidth="920"
              mc:Ignorable="d">
     <UserControl.Resources>
@@ -1571,6 +1571,12 @@
                                      Visibility="{Binding MusicManager.TrackSearcher.IsLoading,
                                                           Converter={StaticResource BooleanToVisibilityConverter}}" />
                     </Grid>
+                </Grid>
+            </TabItem>
+            
+            <TabItem Header="{DynamicResource Download}">
+                <Grid>
+                    
                 </Grid>
             </TabItem>
             

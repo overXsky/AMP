@@ -204,9 +204,13 @@ namespace AnyListen.Music.Download
                         {
                             if (!string.IsNullOrEmpty(songResult.PicUrl))
                             {
-                                if (!System.IO.File.Exists(picPath))
+                                var picLocation = CommonHelper.GetLocation(songResult.PicUrl);
+                                if (!string.IsNullOrEmpty(picLocation))
                                 {
-                                    await new WebClient().DownloadFileTaskAsync(songResult.PicUrl, picPath);
+                                    if (!System.IO.File.Exists(picPath))
+                                    {
+                                        await new WebClient().DownloadFileTaskAsync(picLocation, picPath);
+                                    }
                                 }
                             }
                         }
