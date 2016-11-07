@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using AnyListen.Music.Download;
 using AnyListen.Music.Track;
+using AnyListen.Settings;
 using AnyListen.ViewModelBase;
-using AnyListen.Views;
+
 // ReSharper disable ExplicitCallerInfoArgument
 
 namespace AnyListen.Music
@@ -184,33 +184,24 @@ namespace AnyListen.Music
                 {
                     if (parameter == null) return;
                     var tracks = ((IList)parameter).Cast<PlayableBase>().ToList().OfType<StreamableBase>().Where(x => x.CanDownload).ToList();
-                    if (tracks.Count == 0) return;
 
-                    if (tracks.Count == 1)
+                    var downloadBitrate = AnyListenSettings.Instance.Config.DownloadBitrate;
+                    var losslessPrefer = AnyListenSettings.Instance.Config.LosslessPrefer;
+                    foreach (var track in tracks)
                     {
-                        var track = tracks[0];
-
-                        var downloadDialog = new DownloadTrackWindow(track.DownloadFilename, DownloadManager.GetExtension(track)) { Owner = Application.Current.MainWindow };
-                        if (downloadDialog.ShowDialog() == true)
+                        track.DownloadBitrate = downloadBitrate;
+                        track.LossPrefer = losslessPrefer;
+                        var fileName = Path.Combine(AnyListenSettings.Instance.Config.DownloadSettings.DownloadFolder,
+                            track.DownloadFilename + DownloadManager.GetExtension(track));
+                        MusicManager.DownloadManager.AddEntry(track, new DownloadSettings
                         {
-                            var settings = downloadDialog.DownloadSettings.Clone();
-                            MusicManager.DownloadManager.AddEntry(track, settings, downloadDialog.SelectedPath);
-                            MusicManager.DownloadManager.IsOpen = true;
-                        }
+                            AddTags = true,
+                            IsConverterEnabled = false,
+                            Bitrate = AudioBitrate.B320,
+                            DownloadFolder = AnyListenSettings.Instance.Config.DownloadSettings.DownloadFolder,
+                        }, fileName);
                     }
-                    else
-                    {
-                        var downloadDialog = new DownloadTrackWindow { Owner = Application.Current.MainWindow };
-                        if (downloadDialog.ShowDialog() == true)
-                        {
-                            var settings = downloadDialog.DownloadSettings.Clone();
-                            foreach (var track in tracks)
-                            {
-                                MusicManager.DownloadManager.AddEntry(track, settings, Path.Combine(downloadDialog.SelectedPath, track.DownloadFilename + settings.GetExtension(track)));
-                            }
-                            MusicManager.DownloadManager.IsOpen = true;
-                        }
-                    }
+                    MusicManager.DownloadManager.IsOpen = true;
                 }));
             }
         }

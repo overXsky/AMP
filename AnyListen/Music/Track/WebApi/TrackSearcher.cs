@@ -325,6 +325,8 @@ namespace AnyListen.Music.Track.WebApi
                 return _downloadTrack ?? (_downloadTrack = new RelayCommand(parameter =>
                 {
                     var param = Convert.ToInt32(parameter);
+                    var downloadBitrate = AnyListenSettings.Instance.Config.DownloadBitrate;
+                    var losslessPrefer = AnyListenSettings.Instance.Config.LosslessPrefer;
                     foreach (var webTrack in SelectedTrackList)
                     {
                         var track = webTrack as WebTrackResultBase;
@@ -359,8 +361,8 @@ namespace AnyListen.Music.Track.WebApi
                                 track.LossPrefer = 0;
                                 break;
                             default:
-                                track.DownloadBitrate = 1;
-                                track.LossPrefer = 0;
+                                track.DownloadBitrate = downloadBitrate;
+                                track.LossPrefer = losslessPrefer;
                                 break;
                         }
                         var fileName = Path.Combine(AnyListenSettings.Instance.Config.DownloadSettings.DownloadFolder,

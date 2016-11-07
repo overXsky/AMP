@@ -1239,6 +1239,9 @@
                                         </MenuItem.ItemContainerStyle>
                                     </MenuItem>
                                     <Separator />
+                                    <MenuItem Command="{Binding MusicManager.TrackSearcher.DownloadTrack}" 
+                                              CommandParameter="6"
+                                              Header="快速下载" />
                                     <MenuItem Header="{DynamicResource Download}">
                                         <MenuItem Background="Transparent" 
                                                   Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
