@@ -20,7 +20,7 @@ namespace AnyListen.AppMainWindow.WindowSkins
             {
                 MaxHeight = double.PositiveInfinity,
                 MaxWidth = double.PositiveInfinity,
-                MinHeight = 580,
+                MinHeight = 586,
                 MinWidth = 940,
                 ShowSystemMenuOnRightClick = true,
                 ShowTitleBar = false,

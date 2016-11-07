@@ -15,8 +15,8 @@
              xmlns:web="clr-namespace:AnyListen.Music.Track.WebApi"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              DataContext="{x:Static viewmodels:MainViewModel.Instance}"
-             d:DesignHeight="580"
-             d:DesignWidth="920"
+             d:DesignHeight="586"
+             d:DesignWidth="940"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -874,7 +874,7 @@
                             <ContentControl x:Name="AudioVisualisationContentControl"
                                             Height="60" Grid.Row="1"
                                             VerticalAlignment="Top"
-                                            Margin="0,10,0,0"
+                                            Margin="4,0,4,14"
                                             Focusable="False"
                                             BorderThickness="0"
                                             behaviors:AudioVisualisationBehavior.AudioVisualisationForAdvancedWindow="{Binding MySettings.Config.ApplicationDesign.AudioVisualisation.Visualisation}">
@@ -947,7 +947,7 @@
                                               IsChecked="{Binding MusicManager.CSCoreEngine.CurrentTrack.IsFavorite}"
                                               Style="{StaticResource FavoriteToggleButton}" />
                             </hurricaneControls:AnimatedStackPanel>
-                            <ListBox Grid.Row="1" Margin="0,10,10,10"
+                            <ListBox Grid.Row="1" Margin="0,12,10,10"
                                      ItemsSource="{Binding MusicManager.CSCoreEngine.MyLrcItemList}"
                                      x:Name="fullLyricList"  SelectionMode="Single"
                                      Focusable="False"
@@ -1212,8 +1212,12 @@
                             <ListView.Resources>
                                 <converter:FormatLargeNumber x:Key="FormatLargeNumber" />
                                 <ContextMenu x:Key="ContextMenu" DataContext="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=DataContext}">
-                                    <MenuItem Command="{Binding MusicManager.TrackSearcher.PlaySelectedTrack}" Header="{DynamicResource Play}" />
+                                    <MenuItem Command="{Binding MusicManager.TrackSearcher.FetchMoreDataCommand}" 
+                                              IsEnabled="{Binding MusicManager.TrackSearcher.HasNext}"
+                                              Header="加载更多">
+                                    </MenuItem>
                                     <Separator />
+                                    <MenuItem Command="{Binding MusicManager.TrackSearcher.PlaySelectedTrack}" Header="{DynamicResource Play}" />
                                     <MenuItem Header="{DynamicResource AddToPlaylist}">
                                         <MenuItem.Resources>
                                             <CollectionViewSource x:Key="MyMenuItems" Source="{Binding MusicManager.Playlists}" />
@@ -1234,17 +1238,83 @@
                                             </Style>
                                         </MenuItem.ItemContainerStyle>
                                     </MenuItem>
-                                    <MenuItem Command="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=SelectedItem.OpenUrl}" Header="{DynamicResource OpenUrl}" />
                                     <Separator />
-                                    <MenuItem Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
+                                    <MenuItem Header="{DynamicResource Download}">
+                                        <MenuItem Background="Transparent" 
+                                                  Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
                                                                 Path=DataContext.MusicManager.TrackSearcher.DownloadTrack}"
-                                              CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ListView},Path=SelectedItems}"
-                                              Header="{DynamicResource Download}"
-                                              IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=ListView},
-                                                                  Path=SelectedItem.CanDownload}" />
-                                    <MenuItem Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
+                                                  CommandParameter="0"
+                                                  Header="Flac优先">
+                                        </MenuItem>
+                                        <MenuItem Background="Transparent"
+                                                  Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
+                                                                Path=DataContext.MusicManager.TrackSearcher.DownloadTrack}"
+                                                  CommandParameter="1"
+                                                  Header="Ape优先">
+                                        </MenuItem>
+                                        <MenuItem Background="Transparent"
+                                                  Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
+                                                                Path=DataContext.MusicManager.TrackSearcher.DownloadTrack}"
+                                                  CommandParameter="2"
+                                                  Header="Wav优先">
+                                        </MenuItem>
+                                        <MenuItem Background="Transparent"
+                                                  Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
+                                                                Path=DataContext.MusicManager.TrackSearcher.DownloadTrack}"
+                                                  CommandParameter="3"
+                                                  Header="320K优先">
+                                        </MenuItem>
+                                        <MenuItem Background="Transparent"
+                                                  Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
+                                                                Path=DataContext.MusicManager.TrackSearcher.DownloadTrack}"
+                                                  CommandParameter="4"
+                                                  Header="192K优先">
+                                        </MenuItem>
+                                        <MenuItem Background="Transparent"
+                                                  Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
+                                                                Path=DataContext.MusicManager.TrackSearcher.DownloadTrack}"
+                                                  CommandParameter="5"
+                                                  Header="128K优先">
+                                        </MenuItem>
+                                    </MenuItem>
+                                    <MenuItem Header="下载全部">
+                                        <MenuItem Background="Transparent" 
+                                                  Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
                                                                 Path=DataContext.MusicManager.TrackSearcher.DownloadAllTrack}"
-                                              Header="下载全部"/>
+                                                  CommandParameter="0"
+                                                  Header="Flac优先">
+                                        </MenuItem>
+                                        <MenuItem Background="Transparent"
+                                                  Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
+                                                                Path=DataContext.MusicManager.TrackSearcher.DownloadAllTrack}"
+                                                  CommandParameter="1"
+                                                  Header="Ape优先">
+                                        </MenuItem>
+                                        <MenuItem Background="Transparent"
+                                                  Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
+                                                                Path=DataContext.MusicManager.TrackSearcher.DownloadAllTrack}"
+                                                  CommandParameter="2"
+                                                  Header="Wav优先">
+                                        </MenuItem>
+                                        <MenuItem Background="Transparent"
+                                                  Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
+                                                                Path=DataContext.MusicManager.TrackSearcher.DownloadAllTrack}"
+                                                  CommandParameter="3"
+                                                  Header="320K优先">
+                                        </MenuItem>
+                                        <MenuItem Background="Transparent"
+                                                  Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
+                                                                Path=DataContext.MusicManager.TrackSearcher.DownloadAllTrack}"
+                                                  CommandParameter="4"
+                                                  Header="192K优先">
+                                        </MenuItem>
+                                        <MenuItem Background="Transparent"
+                                                  Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
+                                                                Path=DataContext.MusicManager.TrackSearcher.DownloadAllTrack}"
+                                                  CommandParameter="5"
+                                                  Header="128K优先">
+                                        </MenuItem>
+                                    </MenuItem>
                                     <Separator />
                                     <MenuItem Header="复制地址">
                                         <MenuItem Header="空间专用" 
@@ -1255,108 +1325,6 @@
                                                   Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
                                                                 Path=DataContext.MusicManager.TrackSearcher.CopyUrl}"
                                                   CommandParameter="1"/>
-                                        <!--<MenuItem Background="Transparent" 
-                                                  Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
-                                                                Path=DataContext.MusicManager.TrackSearcher.CopyUrl}"
-                                                  CommandParameter="2"
-                                                  Header="Flac地址">
-                                            <MenuItem.Style>
-                                                <Style BasedOn="{StaticResource MetroMenuItem}" TargetType="MenuItem">
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListView},
-                                                                  Path=SelectedItem.Result.FlacUrl}" Value="">
-                                                            <Setter Property="Visibility" Value="Collapsed" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </MenuItem.Style>
-                                        </MenuItem>
-                                        <MenuItem Background="Transparent"
-                                                  Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
-                                                                Path=DataContext.MusicManager.TrackSearcher.CopyUrl}"
-                                                  CommandParameter="3"
-                                                  Header="Ape地址">
-                                            <MenuItem.Style>
-                                                <Style BasedOn="{StaticResource MetroMenuItem}" TargetType="MenuItem">
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListView},
-                                                                  Path=SelectedItem.Result.ApeUrl}" Value="">
-                                                            <Setter Property="Visibility" Value="Collapsed" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </MenuItem.Style>
-                                        </MenuItem>
-                                        <MenuItem Background="Transparent"
-                                                  Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
-                                                                Path=DataContext.MusicManager.TrackSearcher.CopyUrl}"
-                                                  CommandParameter="4"
-                                                  Header="Wav地址">
-                                            <MenuItem.Style>
-                                                <Style BasedOn="{StaticResource MetroMenuItem}" TargetType="MenuItem">
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListView},
-                                                                  Path=SelectedItem.Result.WavUrl}" Value="">
-                                                            <Setter Property="Visibility" Value="Collapsed" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </MenuItem.Style>
-                                        </MenuItem>
-                                        <MenuItem Background="Transparent"
-                                                  Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
-                                                                Path=DataContext.MusicManager.TrackSearcher.CopyUrl}"
-                                                  CommandParameter="5"
-                                                  Header="320K地址">
-                                            <MenuItem.Style>
-                                                <Style BasedOn="{StaticResource MetroMenuItem}" TargetType="MenuItem">
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListView},
-                                                                  Path=SelectedItem.Result.SqUrl}" Value="">
-                                                            <Setter Property="Visibility" Value="Collapsed" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </MenuItem.Style>
-                                        </MenuItem>
-                                        <MenuItem Background="Transparent"
-                                                  Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
-                                                                Path=DataContext.MusicManager.TrackSearcher.CopyUrl}"
-                                                  CommandParameter="6"
-                                                  Header="192K地址">
-                                            <MenuItem.Style>
-                                                <Style BasedOn="{StaticResource MetroMenuItem}" TargetType="MenuItem">
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListView},
-                                                                  Path=SelectedItem.Result.HqUrl}" Value="">
-                                                            <Setter Property="Visibility" Value="Collapsed" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </MenuItem.Style>
-                                        </MenuItem>
-                                        <MenuItem Background="Transparent"
-                                                  Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
-                                                                Path=DataContext.MusicManager.TrackSearcher.CopyUrl}"
-                                                  CommandParameter="7"
-                                                  Header="128K地址">
-                                            <MenuItem.Style>
-                                                <Style BasedOn="{StaticResource MetroMenuItem}" TargetType="MenuItem">
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListView},
-                                                                  Path=SelectedItem.Result.LqUrl}" Value="">
-                                                            <Setter Property="Visibility" Value="Collapsed" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </MenuItem.Style>
-                                        </MenuItem>-->
                                         <MenuItem Background="Transparent"
                                                   Command="{Binding RelativeSource={RelativeSource AncestorType=ListView},
                                                                 Path=DataContext.MusicManager.TrackSearcher.CopyUrl}"
@@ -1574,7 +1542,7 @@
                 </Grid>
             </TabItem>
             
-            <TabItem Header="{DynamicResource Download}">
+            <TabItem Header="{DynamicResource Download}" Visibility="Collapsed">
                 <Grid>
                     
                 </Grid>

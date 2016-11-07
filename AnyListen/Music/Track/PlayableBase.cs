@@ -293,18 +293,18 @@ namespace AnyListen.Music.Track
         public virtual async Task<bool> CheckTrack()
         {
             if (!TrackExists) return false;
-            try
-            {
-                using (var soundSource = await GetSoundSource())
-                {
-                    SetDuration(soundSource.GetLength());
-                    kHz = soundSource.WaveFormat.SampleRate/1000;
-                }
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            //try
+            //{
+            //    using (var soundSource = await GetSoundSource())
+            //    {
+            //        SetDuration(soundSource.GetLength());
+            //        kHz = soundSource.WaveFormat.SampleRate/1000;
+            //    }
+            //}
+            //catch (Exception)
+            //{
+            //    return false;
+            //}
 
             IsChecked = true;
             return true;

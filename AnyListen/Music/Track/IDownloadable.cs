@@ -8,5 +8,7 @@ namespace AnyListen.Music.Track
         string DownloadFilename { get; }
         DownloadMethod DownloadMethod { get; }
         bool CanDownload { get; }
+        int DownloadBitrate { get; set; }
+        int LossPrefer { get; set; }
     }
 }

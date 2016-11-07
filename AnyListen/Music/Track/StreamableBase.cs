@@ -23,6 +23,8 @@ namespace AnyListen.Music.Track
         public abstract string DownloadFilename { get; }
         public abstract Download.DownloadMethod DownloadMethod { get; }
         public abstract bool CanDownload { get; }
+        public int DownloadBitrate { get; set; }
+        public int LossPrefer { get; set; }
 
         // ReSharper disable once InconsistentNaming
         protected RelayCommand _openLinkCommand;

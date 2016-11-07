@@ -44,6 +44,8 @@ namespace AnyListen.Music.Download
         public string DownloadFilename { get; set; }
 
         public bool CanDownload => true;
+        public int DownloadBitrate { get; set; }
+        public int LossPrefer { get; set; }
     }
 
     public enum DownloadMethod { AnyListen }

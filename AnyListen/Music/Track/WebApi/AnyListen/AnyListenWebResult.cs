@@ -32,8 +32,8 @@ namespace AnyListen.Music.Track.WebApi.AnyListen
             get
             {
                 var song = (SongResult) Result;
-                return CommonHelper.GetDownloadUrl(song, AnyListenSettings.Instance.Config.DownloadBitrate,
-                    AnyListenSettings.Instance.Config.LosslessPrefer, false);
+                return CommonHelper.GetDownloadUrl(song, DownloadBitrate,
+                    LossPrefer, false);
             }
         }
 

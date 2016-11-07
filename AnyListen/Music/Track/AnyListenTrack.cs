@@ -122,8 +122,8 @@ namespace AnyListen.Music.Track
         public override string Website => "http://www.itwusun.com";
         public override bool IsInfinityStream => false;
 
-        public override string DownloadParameter => CommonHelper.GetDownloadUrl(SongResult, AnyListenSettings.Instance.Config.DownloadBitrate,
-            AnyListenSettings.Instance.Config.LosslessPrefer, false);
+        public override string DownloadParameter => CommonHelper.GetDownloadUrl(SongResult, DownloadBitrate,
+            LossPrefer, false);
 
         public override string DownloadFilename
         {

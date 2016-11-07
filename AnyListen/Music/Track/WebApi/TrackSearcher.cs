@@ -35,6 +35,16 @@ namespace AnyListen.Music.Track.WebApi
             }
         }
 
+        private bool _hasNext;
+        public bool HasNext
+        {
+            get { return _hasNext; }
+            set
+            {
+                SetProperty(value, ref _hasNext);
+            }
+        }
+
         private bool _nothingFound;
         public bool NothingFound
         {
@@ -160,6 +170,7 @@ namespace AnyListen.Music.Track.WebApi
             {
                 list.AddRange(Results);
             }
+            var count = list.Count;
             var tasks = MusicApis.Where((t, i) => t.IsEnabled && (_manager.DownloadManager.SelectedService == 0 || _manager.DownloadManager.SelectedService == i + 1)).Select(t => t.Search(SearchText,_currentPageIndex,30)).ToList();
             foreach (var task in tasks)
             {
@@ -169,6 +180,7 @@ namespace AnyListen.Music.Track.WebApi
                     list.AddRange(results);
                 }
             }
+            HasNext = list.Count > count;
             NothingFound = list.Count == 0;
             SortResults(list);
             var str = _manager.DownloadManager.Searches.FirstOrDefault(x => x.ToUpper() == SearchText.ToUpper());
@@ -312,14 +324,44 @@ namespace AnyListen.Music.Track.WebApi
             {
                 return _downloadTrack ?? (_downloadTrack = new RelayCommand(parameter =>
                 {
-                    var selectList = parameter as IList;
-                    if (selectList == null) return;
-                    foreach (var webTrack in selectList)
+                    var param = Convert.ToInt32(parameter);
+                    foreach (var webTrack in SelectedTrackList)
                     {
                         var track = webTrack as WebTrackResultBase;
                         if (track == null)
                         {
                             continue;
+                        }
+                        switch (param)
+                        {
+                            case 0:
+                                track.DownloadBitrate = 0;
+                                track.LossPrefer = 0;
+                                break;
+                            case 1:
+                                track.DownloadBitrate = 0;
+                                track.LossPrefer = 1;
+                                break;
+                            case 2:
+                                track.DownloadBitrate = 0;
+                                track.LossPrefer = 2;
+                                break;
+                            case 3:
+                                track.DownloadBitrate = 1;
+                                track.LossPrefer = 0;
+                                break;
+                            case 4:
+                                track.DownloadBitrate = 2;
+                                track.LossPrefer = 0;
+                                break;
+                            case 5:
+                                track.DownloadBitrate = 3;
+                                track.LossPrefer = 0;
+                                break;
+                            default:
+                                track.DownloadBitrate = 1;
+                                track.LossPrefer = 0;
+                                break;
                         }
                         var fileName = Path.Combine(AnyListenSettings.Instance.Config.DownloadSettings.DownloadFolder,
                             track.DownloadFilename + DownloadManager.GetExtension(track));
@@ -328,7 +370,7 @@ namespace AnyListen.Music.Track.WebApi
                             AddTags = true,
                             IsConverterEnabled = false,
                             Bitrate = AudioBitrate.B320,
-                            DownloadFolder = AnyListenSettings.Instance.Config.DownloadSettings.DownloadFolder
+                            DownloadFolder = AnyListenSettings.Instance.Config.DownloadSettings.DownloadFolder,
                         }, fileName);
                     }
                     _manager.DownloadManager.IsOpen = true;
@@ -357,9 +399,11 @@ namespace AnyListen.Music.Track.WebApi
             {
                 return _downloadAllTrack ?? (_downloadAllTrack = new RelayCommand(parameter =>
                 {
+                    var param = Convert.ToInt32(parameter);
                     foreach (var track in Results)
                     {
                         if (track == null) return;
+
                         var fileName = Path.Combine(AnyListenSettings.Instance.Config.DownloadSettings.DownloadFolder,
                             track.DownloadFilename + DownloadManager.GetExtension(track));
 
@@ -370,7 +414,37 @@ namespace AnyListen.Music.Track.WebApi
                             Bitrate = AudioBitrate.B320,
                             DownloadFolder = AnyListenSettings.Instance.Config.DownloadSettings.DownloadFolder
                         }, fileName);
-
+                        switch (param)
+                        {
+                            case 0:
+                                track.DownloadBitrate = 0;
+                                track.LossPrefer = 0;
+                                break;
+                            case 1:
+                                track.DownloadBitrate = 0;
+                                track.LossPrefer = 1;
+                                break;
+                            case 2:
+                                track.DownloadBitrate = 0;
+                                track.LossPrefer = 2;
+                                break;
+                            case 3:
+                                track.DownloadBitrate = 1;
+                                track.LossPrefer = 0;
+                                break;
+                            case 4:
+                                track.DownloadBitrate = 2;
+                                track.LossPrefer = 0;
+                                break;
+                            case 5:
+                                track.DownloadBitrate = 3;
+                                track.LossPrefer = 0;
+                                break;
+                            default:
+                                track.DownloadBitrate = 1;
+                                track.LossPrefer = 0;
+                                break;
+                        }
                     }
                     _manager.DownloadManager.IsOpen = true;
                 }));
@@ -564,5 +638,6 @@ namespace AnyListen.Music.Track.WebApi
                 }));
             }
         }
+
     }
 }

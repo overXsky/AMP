@@ -80,6 +80,8 @@ namespace AnyListen.Music.Track.WebApi
         public abstract Download.DownloadMethod DownloadMethod { get; }
 
         public abstract bool CanDownload { get; }
+        public int DownloadBitrate { get; set; }
+        public int LossPrefer { get; set; }
 
         public string Artist
         {
