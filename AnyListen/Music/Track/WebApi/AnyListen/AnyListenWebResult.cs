@@ -35,6 +35,10 @@ namespace AnyListen.Music.Track.WebApi.AnyListen
                 return CommonHelper.GetDownloadUrl(song, DownloadBitrate,
                     LossPrefer, false);
             }
+            set
+            {
+
+            }
         }
 
         public override string DownloadFilename
@@ -82,6 +86,10 @@ namespace AnyListen.Music.Track.WebApi.AnyListen
                         break;
                 }
                 return fileName;
+            }
+            set
+            {
+
             }
         }
         public override DownloadMethod DownloadMethod => DownloadMethod.AnyListen;

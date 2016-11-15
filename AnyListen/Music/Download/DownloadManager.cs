@@ -113,9 +113,18 @@ namespace AnyListen.Music.Download
 
         public async static Task<bool> DownloadAndConfigureTrack(IDownloadable downloadInformation, IMusicInformation musicInformation, string fileName, Action<double> progressChangedAction, DownloadSettings settings)
         {
-            if (string.IsNullOrEmpty(CommonHelper.GetLocation(downloadInformation.DownloadParameter)))
+            var link = CommonHelper.GetLocation(downloadInformation.DownloadParameter);
+            if (string.IsNullOrEmpty(link))
             {
                 return false;
+            }
+            downloadInformation.DownloadParameter = link;
+            var format = CommonHelper.GetFormat(link);
+            if (!fileName.EndsWith(format))
+            {
+                fileName =
+                    // ReSharper disable once StringLastIndexOfIsCultureSpecific.1
+                    fileName.Substring(0, fileName.LastIndexOf(".")) + format;
             }
             if (!await DownloadTrack(downloadInformation, fileName, progressChangedAction))
             {
@@ -194,47 +203,6 @@ namespace AnyListen.Music.Download
                         {
                             tags = (Tag)file.GetTag(TagTypes.Id3v2, true);
                         }
-                        var picBasePath = Path.Combine(Environment.CurrentDirectory, "Pic");
-                        if (!Directory.Exists(picBasePath))
-                        {
-                            Directory.CreateDirectory(picBasePath);
-                        }
-                        var picPath = Path.Combine(picBasePath, songResult.SongId + ".jpg");
-                        try
-                        {
-                            if (!string.IsNullOrEmpty(songResult.PicUrl))
-                            {
-                                var picLocation = CommonHelper.GetLocation(songResult.PicUrl);
-                                if (!string.IsNullOrEmpty(picLocation))
-                                {
-                                    if (!System.IO.File.Exists(picPath))
-                                    {
-                                        await new WebClient().DownloadFileTaskAsync(picLocation, picPath);
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            CommonHelper.AddLog(ex.ToString());
-                        }
-                        try
-                        {
-                            if (System.IO.File.Exists(picPath))
-                            {
-                                var picture = new Picture(picPath)
-                                {
-                                    Description = "itwusun.com",
-                                    MimeType = MediaTypeNames.Image.Jpeg,
-                                    Type = PictureType.FrontCover
-                                };
-                                tags.Pictures = new IPicture[] { picture };
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            CommonHelper.AddLog(ex.ToString());
-                        }
                         if (!string.IsNullOrEmpty(songResult.SongName))
                         {
                             tags.Title = songResult.SongName;
@@ -293,7 +261,7 @@ namespace AnyListen.Music.Download
                         {
                             try
                             {
-                                var html = await new WebClient { Encoding = Encoding.UTF8 }.DownloadStringTaskAsync(new Uri(songResult.LrcUrl));
+                                var html = await new WebClient { Encoding = Encoding.UTF8 }.DownloadStringTaskAsync(songResult.LrcUrl);
                                 if (!string.IsNullOrEmpty(html))
                                 {
                                     html = HttpUtility.HtmlDecode(html);
@@ -305,6 +273,47 @@ namespace AnyListen.Music.Download
                             {
                                 //
                             }
+                        }
+                        var picBasePath = Path.Combine(Environment.CurrentDirectory, "Pic");
+                        if (!Directory.Exists(picBasePath))
+                        {
+                            Directory.CreateDirectory(picBasePath);
+                        }
+                        var picPath = Path.Combine(picBasePath, songResult.SongId + ".jpg");
+                        try
+                        {
+                            if (!string.IsNullOrEmpty(songResult.PicUrl))
+                            {
+                                var picLocation = CommonHelper.GetLocation(songResult.PicUrl);
+                                if (!string.IsNullOrEmpty(picLocation))
+                                {
+                                    if (!System.IO.File.Exists(picPath))
+                                    {
+                                        await new WebClient().DownloadFileTaskAsync(picLocation, picPath);
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            CommonHelper.AddLog(ex.ToString());
+                        }
+                        try
+                        {
+                            if (System.IO.File.Exists(picPath))
+                            {
+                                var picture = new Picture(picPath)
+                                {
+                                    Description = "itwusun.com",
+                                    MimeType = MediaTypeNames.Image.Jpeg,
+                                    Type = PictureType.FrontCover
+                                };
+                                tags.Pictures = new IPicture[] { picture };
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            CommonHelper.AddLog(ex.ToString());
                         }
                         try
                         {

@@ -120,6 +120,7 @@ namespace AnyListen.Music.Track.WebApi
 
         private async Task Search(bool isAlbum)
         {
+            _currentPageIndex = 1;
             List<WebTrackResultBase> list;
             var song = SelectedTrack;
             if (song == null)
@@ -130,18 +131,29 @@ namespace AnyListen.Music.Track.WebApi
             {
                 if (string.IsNullOrEmpty(song.WebTrack.AlbumId) || song.WebTrack.AlbumId == "0")
                 {
-                    return;
+                    SearchText = song.WebTrack.AlbumName;
+                    list = await MusicService.MusicSearch(song.WebTrack.Type, "search", SearchText, "");
                 }
-                list = await MusicService.MusicSearch(song.WebTrack.Type, "album", "", song.WebTrack.AlbumId);
+                else
+                {
+                    list = await MusicService.MusicSearch(song.WebTrack.Type, "album", "", song.WebTrack.AlbumId);
+                    _hasNext = false;
+                }
             }
             else
             {
-                if (string.IsNullOrEmpty(song.WebTrack.ArtistId))
+                if (string.IsNullOrEmpty(song.WebTrack.ArtistId) || song.WebTrack.ArtistId == "0")
                 {
-                    return;
+                    SearchText = song.WebTrack.ArtistName;
+                    list = await MusicService.MusicSearch(song.WebTrack.Type, "search", SearchText, "");
                 }
-                list = await MusicService.MusicSearch(song.WebTrack.Type, "artist", "", song.WebTrack.ArtistId, 1, 500);
+                else
+                {
+                    list = await MusicService.MusicSearch(song.WebTrack.Type, "artist", "", song.WebTrack.ArtistId, 1, 500);
+                    _hasNext = false;
+                }
             }
+            list = list ?? new List<WebTrackResultBase>();
             NothingFound = list.Count == 0;
             SortResults(list);
         }

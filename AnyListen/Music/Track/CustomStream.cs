@@ -16,6 +16,8 @@ namespace AnyListen.Music.Track
     {
         public string StreamUrl { get; set; }
         public override bool IsInfinityStream => IsInfinityStreamSerializable;
+        public override string DownloadParameter { get; set; }
+        public override string DownloadFilename { get; set; }
 
         [XmlElement("IsInfinityStream")]
         public bool IsInfinityStreamSerializable { get; set; }
@@ -44,16 +46,6 @@ namespace AnyListen.Music.Track
         protected async override Task LoadImage(DirectoryInfo albumCoverDirectory)
         {
             
-        }
-
-        public override string DownloadParameter
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override string DownloadFilename
-        {
-            get { throw new NotImplementedException(); }
         }
 
         public override DownloadMethod DownloadMethod

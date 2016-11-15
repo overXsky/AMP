@@ -19,8 +19,8 @@ namespace AnyListen.Music.Track
         public string BitRate { get; set; }
 
         //IDownloadable
-        public abstract string DownloadParameter { get; }
-        public abstract string DownloadFilename { get; }
+        public abstract string DownloadParameter { get; set; }
+        public abstract string DownloadFilename { get; set; }
         public abstract Download.DownloadMethod DownloadMethod { get; }
         public abstract bool CanDownload { get; }
         public int DownloadBitrate { get; set; }

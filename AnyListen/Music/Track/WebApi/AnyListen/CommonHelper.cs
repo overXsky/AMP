@@ -200,7 +200,7 @@ namespace AnyListen.Music.Track.WebApi.AnyListen
                 }
                 else if (link.ToLower().Contains(".wav"))
                 {
-                    link = "ape";
+                    link = "wav";
                 }
                 else if (link.ToLower().Contains(".ogg"))
                 {
@@ -235,7 +235,7 @@ namespace AnyListen.Music.Track.WebApi.AnyListen
             }
             else if (url.ToLower().Contains(".wav"))
             {
-                link = "ape";
+                link = "wav";
             }
             else if (url.ToLower().Contains(".ogg"))
             {

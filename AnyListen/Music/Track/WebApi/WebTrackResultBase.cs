@@ -73,9 +73,9 @@ namespace AnyListen.Music.Track.WebApi
             get { return _openUrl ?? (_openUrl = new RelayCommand(parameter => { Process.Start(Url); })); }
         }
 
-        public abstract string DownloadParameter { get; }
+        public abstract string DownloadParameter { get; set; }
 
-        public abstract string DownloadFilename { get; }
+        public abstract string DownloadFilename { get; set; }
 
         public abstract Download.DownloadMethod DownloadMethod { get; }
 
