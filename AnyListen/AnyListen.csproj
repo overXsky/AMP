@@ -374,6 +374,7 @@
     <Compile Include="ViewModels\QueueManagerViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\TagEditorViewModel.cs" />
+    <Compile Include="ViewModels\UpdaterModel.cs" />
     <Compile Include="Views\DownloadTrackWindow.xaml.cs">
       <DependentUpon>DownloadTrackWindow.xaml</DependentUpon>
     </Compile>

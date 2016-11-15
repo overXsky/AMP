@@ -530,6 +530,11 @@
                             <ComboBoxItem Content="按专辑分文件夹" />
                             <ComboBoxItem Content="按歌手\专辑分文件夹" />
                         </ComboBox>
+                        <TextBlock Style="{StaticResource TextBlockHeader}" 
+                                   Margin="0,15,0,0" behaviors:TextBlockBehavior.UpperText="其他" />
+                        <CheckBox Margin="0,10,0,0"
+                                  Content="自动下载歌词"
+                                  IsChecked="{Binding Config.DownLrc}" />
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

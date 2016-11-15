@@ -10,6 +10,7 @@ using System.Web;
 using System.Xml.Serialization;
 using AnyListen.Music.Track;
 using AnyListen.Music.Track.WebApi.AnyListen;
+using AnyListen.Settings;
 using AnyListen.Utilities;
 using AnyListen.ViewModelBase;
 using TagLib;
@@ -126,6 +127,7 @@ namespace AnyListen.Music.Download
                     // ReSharper disable once StringLastIndexOfIsCultureSpecific.1
                     fileName.Substring(0, fileName.LastIndexOf(".")) + format;
             }
+            downloadInformation.DownloadFilename = fileName;
             if (!await DownloadTrack(downloadInformation, fileName, progressChangedAction))
             {
                 return false;
@@ -146,7 +148,7 @@ namespace AnyListen.Music.Download
             return true;
         }
 
-        public async static Task AddTags(IMusicInformation information, string path)
+        public static async Task AddTags(IMusicInformation information, string path)
         {
             var filePath = new FileInfo(path);
             if (!filePath.Exists) return;
@@ -267,6 +269,13 @@ namespace AnyListen.Music.Download
                                     html = HttpUtility.HtmlDecode(html);
                                     html = HttpUtility.HtmlDecode(html);
                                     tags.Lyrics = html;
+                                    if (AnyListenSettings.Instance.Config.DownLrc)
+                                    {
+                                        // ReSharper disable once StringLastIndexOfIsCultureSpecific.1
+                                        var lrcPath = filePath.FullName.Substring(0, filePath.FullName.LastIndexOf(".")) +
+                                                      ".lrc";
+                                        System.IO.File.WriteAllText(lrcPath, html);
+                                    }
                                 }
                             }
                             catch (Exception)
@@ -304,7 +313,7 @@ namespace AnyListen.Music.Download
                             {
                                 var picture = new Picture(picPath)
                                 {
-                                    Description = "itwusun.com",
+                                    Description = "yyfm",
                                     MimeType = MediaTypeNames.Image.Jpeg,
                                     Type = PictureType.FrontCover
                                 };
@@ -326,7 +335,7 @@ namespace AnyListen.Music.Download
                         // ReSharper disable once AccessToDisposedClosure
                         await Task.Run(() => file.Save());
                     }
-                    
+
                 }
             }
             catch (Exception ex)

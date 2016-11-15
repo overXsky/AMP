@@ -37,7 +37,7 @@ namespace AnyListen.Music.Track.WebApi.AnyListen
             }
             set
             {
-
+                //
             }
         }
 
@@ -89,7 +89,7 @@ namespace AnyListen.Music.Track.WebApi.AnyListen
             }
             set
             {
-
+                //
             }
         }
         public override DownloadMethod DownloadMethod => DownloadMethod.AnyListen;

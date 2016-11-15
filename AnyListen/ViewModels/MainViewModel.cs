@@ -52,6 +52,8 @@ namespace AnyListen.ViewModels
             MusicManager.LoadFromSettings();
             MainTabControlIndex = MySettings.CurrentState.MainTabControlIndex;
 
+            Updater = new UpdaterModel();
+
             _keyboardListener = new KeyboardListener();
             _keyboardListener.KeyDown += KListener_KeyDown;
         }
@@ -224,15 +226,15 @@ namespace AnyListen.ViewModels
             }
         }
 
-        //private UpdateService _updater;
-        //public UpdateService Updater
-        //{
-        //    get { return _updater; }
-        //    set
-        //    {
-        //        SetProperty(value, ref _updater);
-        //    }
-        //}
+        private UpdaterModel _updater;
+        public UpdaterModel Updater
+        {
+            get { return _updater; }
+            set
+            {
+                SetProperty(value, ref _updater);
+            }
+        }
 
         private int _mainTabControlIndex;
         public int MainTabControlIndex

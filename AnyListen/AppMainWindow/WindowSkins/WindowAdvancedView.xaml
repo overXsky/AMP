@@ -50,7 +50,7 @@
                        IsHitTestVisible="False"
                        Text="AnyListen" />
         </Grid>
-        <!--<Button Grid.Row="0"
+        <Button Grid.Row="0"
                 Grid.RowSpan="2"
                 Height="30"
                 Margin="10,40,15,10"
@@ -59,13 +59,12 @@
                 Background="{StaticResource NormalColorBrush}"
                 Command="{Binding OpenUpdater}"
                 Visibility="{Binding Updater.UpdateFound,
-                                     Converter={StaticResource BooleanToVisibilityConverter}}">
+                                             Converter={StaticResource BooleanToVisibilityConverter}}">
             <Button.Resources>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
             </Button.Resources>
-
             <TextBlock Foreground="White" Text="{DynamicResource NewUpdateAvailable}" />
-        </Button>-->
+        </Button>
         <TabControl x:Name="MainMenu"  
                     Grid.Row="1"
                     SelectionChanged="MainMenu_OnSelectionChanged"

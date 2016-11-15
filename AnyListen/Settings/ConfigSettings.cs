@@ -41,6 +41,7 @@ namespace AnyListen.Settings
         public int LosslessPrefer { get; set; }
         public int FileNameFormat { get; set; }
         public int FileFloderFormat { get; set; }
+        public bool DownLrc { get; set; }
 
         //Design
         public ApplicationDesign ApplicationDesign { get; set; }
@@ -92,6 +93,7 @@ namespace AnyListen.Settings
 
         //Updates
         public bool CheckForAnyListenUpdates { get; set; }
+        public DateTime LastUpdateTime { get; set; }
         public bool CheckForYoutubeDlUpdates { get; set; }
 
         private List<LanguageInfo> _languages;
@@ -149,6 +151,8 @@ namespace AnyListen.Settings
             Passwords = new List<PasswordEntry>();
             FileNameFormat = 1;
             DownloadBitrate = 1;
+            LastUpdateTime = DateTime.MinValue;
+            DownLrc = false;
         }
 
         public ConfigSettings()

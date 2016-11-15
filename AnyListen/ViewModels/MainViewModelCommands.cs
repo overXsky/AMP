@@ -281,7 +281,7 @@ namespace AnyListen.ViewModels
             {
                 return _openupdater ?? (_openupdater = new RelayCommand(parameter =>
                 {
-                    //_baseWindow.WindowDialogService.ShowDialog(new UpdateWindow(Updater));
+                    Process.Start(Updater.DownUrl);
                 }));
             }
         }
@@ -559,7 +559,7 @@ namespace AnyListen.ViewModels
             {
                 return _openFileLocation ?? (_openFileLocation = new RelayCommand(parameter =>
                 {
-                    if (parameter == null || string.IsNullOrEmpty(parameter.ToString())) return;
+                    if (string.IsNullOrEmpty(parameter?.ToString())) return;
                     var file = new FileInfo(parameter.ToString());
                     if (!file.Exists) return;
                     Process.Start("explorer.exe", $"/select,\"{file.FullName}\"");

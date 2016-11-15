@@ -53,7 +53,7 @@ namespace AnyListen.Music.Track
         {
             if (albumCoverDirectory.Exists)
             {
-                var imageFile = albumCoverDirectory.GetFiles().FirstOrDefault(item => item.Name.ToLower() == (SongResult.Type + "_" + SongResult.SongId).ToLower());
+                var imageFile = albumCoverDirectory.GetFiles().FirstOrDefault(item => item.Name.ToLower() == (SongResult.Type + "_" + (string.IsNullOrEmpty(SongResult.AlbumId) ? SongResult.SongId : SongResult.AlbumId)).ToLower());
                 if (imageFile != null)
                 {
                     Image = new BitmapImage(new Uri(imageFile.FullName));
@@ -131,7 +131,7 @@ namespace AnyListen.Music.Track
             }
             set
             {
-                
+                //
             }
         }
 
@@ -183,7 +183,7 @@ namespace AnyListen.Music.Track
             }
             set
             {
-
+                //
             }
         }
         public override DownloadMethod DownloadMethod => DownloadMethod.AnyListen;

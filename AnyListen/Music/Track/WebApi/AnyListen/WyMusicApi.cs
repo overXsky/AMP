@@ -24,7 +24,7 @@ namespace AnyListen.Music.Track.WebApi.AnyListen
                 if (config.SaveCoverLocal)
                 {
                     if (!albumDirectory.Exists) albumDirectory.Create();
-                    await ImageHelper.SaveImage(image, track.SongResult.Type + "_" + track.SongResult.SongId, albumDirectory.FullName);
+                    await ImageHelper.SaveImage(image, track.SongResult.Type + "_" + (string.IsNullOrEmpty(track.SongResult.AlbumId) ? track.SongResult.SongId : track.SongResult.AlbumId), albumDirectory.FullName);
                 }
                 return image;
             }

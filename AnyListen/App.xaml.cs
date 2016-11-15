@@ -28,8 +28,6 @@ namespace AnyListen
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            //if (e.Args.Length > 0 && e.Args[0] == "/update")
-            //    UpdateService.UpdateSettings(AnyListenSettings.Paths.BaseDirectory);
             AnyListenSettings.Instance.Load();
 
             var openfile = false;
@@ -56,7 +54,7 @@ namespace AnyListen
                         var item = manager.ContextMenuItems.First(x => x.Extension == Environment.GetCommandLineArgs()[2]);
                         try
                         {
-                            if (item != null) item.ToggleRegister(!item.IsRegistered, false);
+                            item?.ToggleRegister(!item.IsRegistered, false);
                         }
                         catch (SecurityException)
                         {
@@ -91,7 +89,7 @@ namespace AnyListen
                         MagicArrow.StrokeWindow.ShowLines = true;
                         break;
                     case "/positiontest":
-                        PositionTestWindow positionTest = new PositionTestWindow();
+                        var positionTest = new PositionTestWindow();
                         positionTest.Show();
                         return;
                     default:
@@ -104,7 +102,7 @@ namespace AnyListen
             _myMutex = new Mutex(true, "AnyListen", out aIsNewInstance);
             if (!aIsNewInstance)
             {
-                IntPtr hwnd = UnsafeNativeMethods.FindWindow(null, "AnyListen");
+                var hwnd = UnsafeNativeMethods.FindWindow(null, "AnyListen");
                 if (openfile)
                 {
                     WindowMessanger.SendMessageToWindow(hwnd, WindowMessanger.WM_OPENMUSICFILE, new FileInfo(Environment.GetCommandLineArgs()[1]).FullName);
@@ -125,9 +123,9 @@ namespace AnyListen
             Resources.MergedDictionaries.RemoveAt(Resources.MergedDictionaries.Count - 2);
             ApplicationThemeManager.Instance.Apply(AnyListenSettings.Instance.Config.ApplicationDesign);
 
-            MainWindow window = new MainWindow();
+            var window = new MainWindow();
 
-            WindowMessanger messanger = new WindowMessanger(window);
+            var messanger = new WindowMessanger(window);
             window.Show();
             if (openfile)
             {
@@ -135,7 +133,7 @@ namespace AnyListen
                 {
                     foreach (var path in Environment.GetCommandLineArgs().Skip(1))
                     {
-                        FileInfo fi = new FileInfo(path);
+                        var fi = new FileInfo(path);
                         if (fi.Exists)
                         {
                             MainViewModel.Instance.OpenFile(fi, Environment.GetCommandLineArgs().Skip(1).Last() == path);
@@ -152,7 +150,7 @@ namespace AnyListen
 
             messanger.PlayMusicFile += (s, ev) =>
             {
-                FileInfo fi = new FileInfo(ev.Filename);
+                var fi = new FileInfo(ev.Filename);
                 if (fi.Exists)
                 {
                     MainViewModel.Instance.OpenFile(fi, true);

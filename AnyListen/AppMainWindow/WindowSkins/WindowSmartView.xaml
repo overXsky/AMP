@@ -83,7 +83,7 @@
                 <converter:CollapsedOnNullValue x:Key="CollapsedOnNullValue" />
             </Grid.Resources>
             <Grid>
-                <!--<Button Height="30"
+                <Button Height="30"
                         Background="{StaticResource NormalColorBrush}"
                         Command="{Binding OpenUpdater}"
                         Visibility="{Binding Updater.UpdateFound,
@@ -94,7 +94,7 @@
                     </Button.Resources>
 
                     <TextBlock Foreground="White" Text="{DynamicResource NewUpdateAvailable}" />
-                </Button>-->
+                </Button>
             </Grid>
             <DockPanel Grid.Row="1"
                        Margin="5,5,0,0"
@@ -690,14 +690,6 @@
                                                 <ContentControl.Resources>
                                                     <DataTemplate DataType="{x:Type track:StreamableBase}">
                                                         <StackPanel Orientation="Horizontal">
-                                                            <Viewbox Width="12"
-                                                                     Height="12"
-                                                                     VerticalAlignment="Center">
-                                                                <Path Data="{Binding ProviderVector}" Fill="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=Foreground}" />
-                                                            </Viewbox>
-                                                            <TextBlock Text=" :: " />
-                                                            <TextBlock Text="{Binding kHz}" />
-                                                            <TextBlock Text=" kHz" />
                                                             <StackPanel Orientation="Horizontal">
                                                                 <StackPanel.Style>
                                                                     <Style TargetType="StackPanel">
@@ -708,8 +700,7 @@
                                                                         </Style.Triggers>
                                                                     </Style>
                                                                 </StackPanel.Style>
-                                                                <TextBlock Text=" :: " />
-                                                                <TextBlock MaxWidth="120"
+                                                                <TextBlock MaxWidth="200"
                                                                            Text="{Binding Uploader}"
                                                                            TextTrimming="CharacterEllipsis" />
                                                             </StackPanel>

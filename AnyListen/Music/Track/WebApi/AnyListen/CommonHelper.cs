@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
@@ -348,6 +350,14 @@ namespace AnyListen.Music.Track.WebApi.AnyListen
         {
             var cpuArr = CpuId.Invoke(0);
             return string.Join("-", cpuArr.Select(x => x.ToString("X2", CultureInfo.InvariantCulture)));
+        }
+
+        public static string GetCurrentAssemblyVersion()
+        {
+            var asm = Assembly.GetExecutingAssembly();
+            if (asm.Location == null) return null;
+            var fvi = FileVersionInfo.GetVersionInfo(asm.Location);
+            return $"{fvi.ProductMajorPart}.{fvi.ProductMinorPart}.{fvi.ProductBuildPart}";
         }
     }
 }

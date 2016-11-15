@@ -32,7 +32,7 @@ namespace AnyListen.Music.MusicCover
             {
                 var fileName = track.WebTrack == null
                     ? track.AuthenticationCode.ToString()
-                    : (track.WebTrack.Type + "_" + track.WebTrack.SongId);
+                    : (track.WebTrack.Type + "_" + (string.IsNullOrEmpty(track.WebTrack.AlbumId) ? track.WebTrack.SongId : track.WebTrack.AlbumId));
                 // ReSharper disable once LoopCanBeConvertedToQuery
                 foreach (var item in di.GetFiles("*.png"))
                 {
