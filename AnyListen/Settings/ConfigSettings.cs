@@ -42,6 +42,7 @@ namespace AnyListen.Settings
         public int FileNameFormat { get; set; }
         public int FileFloderFormat { get; set; }
         public bool DownLrc { get; set; }
+        public bool UseXunlei { get; set; }
 
         //Design
         public ApplicationDesign ApplicationDesign { get; set; }
@@ -153,6 +154,7 @@ namespace AnyListen.Settings
             DownloadBitrate = 1;
             LastUpdateTime = DateTime.MinValue;
             DownLrc = false;
+            UseXunlei = true;
         }
 
         public ConfigSettings()

@@ -26,7 +26,7 @@ namespace AnyListen.ViewModels
                         var json = JObject.Parse(html);
                         var ver = json["version"].ToString();
                         var crtVer = CommonHelper.GetCurrentAssemblyVersion();
-                        this.UpdateFound = ver != crtVer;
+                        UpdateFound = Convert.ToInt32(ver.Replace(".","")) > Convert.ToInt32(crtVer.Replace(".", ""));
                         DownUrl = string.IsNullOrEmpty(json["downUrl"].ToString()) ? "https://github.com/AnyListen/AMP/releases" : json["downUrl"].ToString();
                         AnyListenSettings.Instance.Config.LastUpdateTime = DateTime.Now;
                     }));

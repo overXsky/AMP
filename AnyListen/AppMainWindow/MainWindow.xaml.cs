@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,6 +14,7 @@ using AnyListen.AppMainWindow.Messages;
 using AnyListen.AppMainWindow.WindowSkins;
 using AnyListen.MagicArrow.DockManager;
 using AnyListen.Music.CustomEventArgs;
+using AnyListen.Music.Download;
 using AnyListen.Settings;
 using AnyListen.Utilities;
 using AnyListen.Utilities.Native;
@@ -76,6 +78,15 @@ namespace AnyListen
                     Left = Left,
                     Top = Top
                 };
+            }
+
+            if (AnyListenSettings.Instance.Config.UseXunlei)
+            {
+                Xl.XL_Init();
+                if (!Directory.Exists(Path.Combine(Environment.CurrentDirectory, "ErrorSongs")))
+                {
+                    Directory.CreateDirectory(Path.Combine(Environment.CurrentDirectory, "ErrorSongs"));
+                }
             }
 
             if (appsettings.ApplicationState.CurrentSide == DockingSide.None)
@@ -374,6 +385,10 @@ namespace AnyListen
 
         void MainWindow_Closing(object sender, CancelEventArgs e)
         {
+            if (AnyListenSettings.Instance.Config.UseXunlei)
+            {
+                Xl.XL_UnInit();
+            }
             if (MagicArrow.DockManager.CurrentSide == DockingSide.None)
             {
                 if (AnyListenSettings.Instance.CurrentState.ApplicationState == null) AnyListenSettings.Instance.CurrentState.ApplicationState = new DockingApplicationState();

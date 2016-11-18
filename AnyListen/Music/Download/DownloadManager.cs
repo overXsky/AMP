@@ -88,7 +88,14 @@ namespace AnyListen.Music.Download
                 switch (download.DownloadMethod)
                 {
                     case DownloadMethod.AnyListen:
-                        await AnyListenDownloader.DownloadAnyListenTrack(download.DownloadParameter, fileName, progressChangedAction);
+                        if (AnyListenSettings.Instance.Config.UseXunlei)
+                        {
+                            await XunleiDownloader.DownloadAnyListenTrack(download.DownloadParameter, fileName, progressChangedAction);
+                        }
+                        else
+                        {
+                            await AnyListenDownloader.DownloadAnyListenTrack(download.DownloadParameter, fileName, progressChangedAction);
+                        }
                         break;
                     default:
                         throw new ArgumentException();
@@ -283,39 +290,18 @@ namespace AnyListen.Music.Download
                                 //
                             }
                         }
-                        var picBasePath = Path.Combine(Environment.CurrentDirectory, "Pic");
-                        if (!Directory.Exists(picBasePath))
-                        {
-                            Directory.CreateDirectory(picBasePath);
-                        }
-                        var picPath = Path.Combine(picBasePath, songResult.SongId + ".jpg");
+
                         try
                         {
                             if (!string.IsNullOrEmpty(songResult.PicUrl))
                             {
-                                var picLocation = CommonHelper.GetLocation(songResult.PicUrl);
-                                if (!string.IsNullOrEmpty(picLocation))
-                                {
-                                    if (!System.IO.File.Exists(picPath))
-                                    {
-                                        await new WebClient().DownloadFileTaskAsync(picLocation, picPath);
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            CommonHelper.AddLog(ex.ToString());
-                        }
-                        try
-                        {
-                            if (System.IO.File.Exists(picPath))
-                            {
-                                var picture = new Picture(picPath)
+                                var datas = new WebClient().DownloadData(songResult.PicUrl);
+                                var picture = new Picture
                                 {
                                     Description = "yyfm",
                                     MimeType = MediaTypeNames.Image.Jpeg,
-                                    Type = PictureType.FrontCover
+                                    Type = PictureType.FrontCover,
+                                    Data = new ByteVector(datas, datas.Length)
                                 };
                                 tags.Pictures = new IPicture[] { picture };
                             }
@@ -323,14 +309,6 @@ namespace AnyListen.Music.Download
                         catch (Exception ex)
                         {
                             CommonHelper.AddLog(ex.ToString());
-                        }
-                        try
-                        {
-                            System.IO.File.Delete(picPath);
-                        }
-                        catch (Exception)
-                        {
-                            //
                         }
                         // ReSharper disable once AccessToDisposedClosure
                         await Task.Run(() => file.Save());

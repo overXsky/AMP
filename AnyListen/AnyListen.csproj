@@ -65,10 +65,16 @@
     <ManifestKeyFile>Hurricane_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CSCore, Version=1.1.5992.18249, Culture=neutral, PublicKeyToken=5a08f2b6f4415dea, processorArchitecture=MSIL">
@@ -209,6 +215,9 @@
     <Compile Include="Music\Download\DownloadSettings.cs" />
     <Compile Include="Music\Download\ffmpeg.cs" />
     <Compile Include="Music\Download\GroovesharkApi.cs" />
+    <Compile Include="Music\Download\XL.cs" />
+    <Compile Include="Music\Download\XunleiClient.cs" />
+    <Compile Include="Music\Download\XunleiDownloader.cs" />
     <Compile Include="Music\Lrc\Lyric.cs" />
     <Compile Include="Music\Lrc\MyLrcItem.cs" />
     <Compile Include="Music\MusicCover\MusicCoverManager.cs" />
@@ -811,6 +820,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="Properties\app.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
